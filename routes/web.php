@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BasicPageController;
+use App\Http\Controllers\Admin\AdminPageController;
+use App\Http\Controllers\Client\ClientPageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +26,25 @@ Route::get('/privacy-policy', [BasicPageController::class, 'privacyPolicy'])->na
 Route::fallback([BasicPageController::class, 'fallback'])->name('fallback');
 
 
-Route::get('/admin', function(){
-    return view('admin.index3');
-});
+Route::group(
+    [
+        'prefix' => 'admin',
+        'middleware' => 'admin',
+        'as' => 'admin.'
+    ],
+    function () {
+        Route::get('/', [AdminPageController::class, 'home'])->name('home');
+    }
+);
+
+
+Route::group(
+    [
+        'prefix' => 'client',
+        'middleware' => 'client',
+        'as' => 'client.'
+    ],
+    function () {
+        Route::get('/', [ClientPageController::class, 'home'])->name('home');
+    }
+);

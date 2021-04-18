@@ -18,6 +18,8 @@
                             <div id="header-nav" class="collapse navbar-collapse">
                                 <ul class="navbar-nav">
                                     <li class=""> <a class="text-white" href="{{ route('home') }}">Home</a></li>
+                                    <li class=""> <a class="text-white" href="{{ route('home') }}">Admin</a></li>
+                                    <li class=""> <a class="text-white" href="{{ route('client.home') }}">Client</a></li>
                                     <li class=""> <a class="text-white" href="{{ route('home') }}">Mobile
                                             Recharge</a></li>
                                     <li class=""> <a class="text-white" href="{{ route('home') }}">Bulk SMS</a></li>
