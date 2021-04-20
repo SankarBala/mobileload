@@ -1,4 +1,4 @@
-    <!-- Login Modal -->
+    {{-- <!-- Login Modal -->
     <div id="login-modal" class="modal fade" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content border-0">
@@ -69,4 +69,4 @@
             </div>
         </div>
     </div>
-    <!-- Login Modal End -->
+    <!-- Login Modal End --> --}}

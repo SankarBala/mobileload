@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BasicPageController;
 use App\Http\Controllers\Admin\AdminPageController;
@@ -15,6 +16,9 @@ use App\Http\Controllers\Client\ClientPageController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/ui', function(){
+    return view('home');
+})->middleware('auth');
 
 Route::get('/', [BasicPageController::class, 'home'])->name('home');
 Route::get('/about-us', [BasicPageController::class, 'aboutUs'])->name('aboutUs');
@@ -48,3 +52,7 @@ Route::group(
         Route::get('/', [ClientPageController::class, 'home'])->name('home');
     }
 );
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
