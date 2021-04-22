@@ -17,16 +17,17 @@
             </div>
             <nav>
                 <ul class="metismenu" id="menu">
-                    <li>
+                    {{-- <li>
                         <a href="javascript:void(0)" aria-expanded="true"><i
                                 class="ti-dashboard"></i><span>dashboard</span></a>
                         <ul class="collapse">
                             <li><a href="">Dashboard 1</a></li>
                         </ul>
-                    </li>
-                    <li><a href=""><i class="ti-layout-sidebar-left"></i> <span>Menu Horizontal</span></a></li>
+                    </li> --}}
+
+                    <li><a href=""><i class="ti-layout-sidebar-left"></i> <span>Dashboard</span></a></li>
                   
-                  
+{{--                   
                     <li>
                         <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-align-left"></i> <span>Multi
                                 level menu</span></a>
@@ -38,7 +39,9 @@
                                 </ul>
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
+
+
                 </ul>
             </nav>
         </div>

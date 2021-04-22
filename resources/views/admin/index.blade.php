@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'title')
+@section('title', 'Dashboard')
 
 @section('breadcrumb')
     <!-- page title area start -->
@@ -24,7 +24,10 @@
 @section('content')
 
     <div class="main-content-inner">
-        <div class="row">
+        <br />
+        <h2>Under Construction</h2>
+
+        {{-- <div class="row">
             <!-- seo fact area start -->
             <div class="col-lg-8">
                 <div class="row">
@@ -235,6 +238,6 @@
                 </div>
             </div>
             <!-- testimonial area end -->
-        </div>
+        </div> --}}
     </div>
 @endsection

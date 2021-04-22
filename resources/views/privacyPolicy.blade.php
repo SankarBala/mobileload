@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'title')
+@section('title', 'Privacy Policy')
 
 @section('content')
-
+Privacy Policy page content here.
 @endsection
 

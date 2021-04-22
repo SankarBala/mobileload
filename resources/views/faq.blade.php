@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'title')
+@section('title', 'Frequently Asked Questions')
 
 @section('content')
 
-content
+Faq page content here.
 
 @endsection
 

@@ -33,7 +33,7 @@ Route::fallback([BasicPageController::class, 'fallback'])->name('fallback');
 Route::group(
     [
         'prefix' => 'admin',
-        'middleware' => 'admin',
+        'middleware' => ['auth', 'admin'],
         'as' => 'admin.'
     ],
     function () {
@@ -44,12 +44,16 @@ Route::group(
 
 Route::group(
     [
-        'prefix' => 'client',
-        'middleware' => 'client',
+        // 'prefix' => 'client',
+        'middleware' => ['auth', 'client'],
         'as' => 'client.'
     ],
     function () {
-        Route::get('/', [ClientPageController::class, 'home'])->name('home');
+        Route::get('/dashboard', [ClientPageController::class, 'home'])->name('home');
+        Route::get('/mobile-recharge', [ClientPageController::class, 'mobile_recharge'])->name('mobile_recharge');
+        Route::get('/bulk-sms', [ClientPageController::class, 'sms'])->name('sms');
+        Route::get('/profile', [ClientPageController::class, 'profile'])->name('profile');
+        Route::get('/setting', [ClientPageController::class, 'setting'])->name('setting');
     }
 );
 

@@ -3,6 +3,7 @@
 namespace App\View\Components\Client;
 
 use Illuminate\View\Component;
+use Illuminate\Support\Facades\Auth;
 
 class Sidebar extends Component
 {
@@ -13,7 +14,7 @@ class Sidebar extends Component
      */
     public function __construct()
     {
-        //
+       //
     }
 
     /**
@@ -23,6 +24,7 @@ class Sidebar extends Component
      */
     public function render()
     {
-        return view('components.client.sidebar');
+
+        return view('components.client.sidebar')->withUser(Auth::user());
     }
 }

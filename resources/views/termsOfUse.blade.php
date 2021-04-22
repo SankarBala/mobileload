@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'title')
+@section('title', 'Terms Of Use')
 
 @section('content')
-
+    Terms Of use page content here.
 @endsection
-

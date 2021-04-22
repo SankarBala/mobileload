@@ -1,6 +1,6 @@
-@extends('admin.layouts.app')
+@extends('client.layouts.app')
 
-@section('title', 'title')
+@section('title', 'Client dashboard')
 
 @section('breadcrumb')
     <!-- page title area start -->

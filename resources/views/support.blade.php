@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'title')
+@section('title', 'Support Center')
 
 @section('content')
-
+Support page content here.
 @endsection
 

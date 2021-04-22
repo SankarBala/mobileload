@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Dashboard 3</title>
+    <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="{{ asset('backend/images/icon/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('backend/css/bootstrap.min.css') }}">
@@ -39,6 +39,7 @@
     <div class="page-container">
         <!-- sidebar menu area start -->
         <x-client.sidebar />
+        
         <!-- sidebar menu area end -->
         <!-- main content area start -->
         <div class="main-content">

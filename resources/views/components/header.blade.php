@@ -18,11 +18,11 @@
                        <div id="header-nav" class="collapse navbar-collapse">
                            <ul class="navbar-nav">
                                <li class=""> <a class="text-white" href="{{ route('home') }}">Home</a></li>
-                               <li class=""> <a class="text-white" href="{{ route('home') }}">Admin</a></li>
-                               <li class=""> <a class="text-white" href="{{ route('client.home') }}">Client</a></li>
-                               <li class=""> <a class="text-white" href="{{ route('home') }}">Mobile
+                               {{-- <li class=""> <a class="text-white" href="{{ route('admin.home') }}">Admin</a></li>
+                               <li class=""> <a class="text-white" href="{{ route('client.home') }}">Client</a></li> --}}
+                               <li class=""> <a class="text-white" href="{{ route('client.mobile_recharge') }}">Mobile
                                        Recharge</a></li>
-                               <li class=""> <a class="text-white" href="{{ route('home') }}">Bulk SMS</a></li>
+                               <li class=""> <a class="text-white" href="{{ route('client.sms') }}">Bulk SMS</a></li>
                                <li class=""> <a class="text-white" href="{{ route('home') }}">Shop Online</a>
                                </li>
                                <li class=""> <a class="text-white" href="{{ route('home') }}">Our Tutorial</a>
@@ -34,9 +34,9 @@
                        <div id="header-nav" class="collapse navbar-collapse">
                            <ul class="navbar-nav">
                                <li class=""> <a class="text-dark" href="{{ route('home') }}">Home</a></li>
-                               <li class=""> <a class="text-dark" href="{{ route('home') }}">Mobile Recharge</a>
+                               <li class=""> <a class="text-dark" href="{{ route('client.mobile_recharge') }}">Mobile Recharge</a>
                                </li>
-                               <li class=""> <a class="text-dark" href="{{ route('home') }}">Bulk SMS</a></li>
+                               <li class=""> <a class="text-dark" href="{{ route('client.sms') }}">Bulk SMS</a></li>
                                <li class=""> <a class="text-dark" href="{{ route('home') }}">Shop Online</a>
                                </li>
                                <li class=""> <a class="text-dark" href="{{ route('home') }}">Our Tutorial</a>
