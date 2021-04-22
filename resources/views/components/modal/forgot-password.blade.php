@@ -22,6 +22,7 @@
                            </form>
                            <p class="text-center mb-0"><a class="btn-link" href="" data-toggle="modal"
                                    data-target="#otp-modal" data-dismiss="modal">Submit OTP</a></p>
+                         
                        </div>
                    </div>
                    <!-- Forgot Password Form End -->
@@ -33,11 +34,10 @@
    @push('script')
        <script type="text/javascript">
            $(document).ready(function() {
-               //    $('#resetPassword').click(function() {
                $('#forgotForm').submit(function(e) {
                    e.preventDefault();
                    $.ajax({
-                       url: "{{ route('otp.store') }}",
+                       url: "{{ route('otp.generator') }}",
                        type: "POST",
                        data: JSON.stringify({
                            contact: $('#resetEmailOrPhone').val(),
@@ -53,13 +53,14 @@
                            $('#resetContact').html($('#resetEmailOrPhone').val());
 
                            $('#resetPassword').prop('disabled', true);
+                           $('#otpToken').val(data.otpToken);
 
                            $('#forgot-password-modal').modal('hide');
                            $('#otp-modal').modal();
 
                            let repeat = setInterval(function() {
                                wait = wait - 1;
-                               $('#resetPassword').text(wait);
+                               $('#resetPassword').text(`Wait ${wait} seconds`);
                                if (wait < 1) {
                                    $('#resetPassword').text("Submit");
                                    $('#resetPassword').prop('disabled', false);
@@ -68,7 +69,7 @@
                            }, 1000);
                        }
                    }).fail(function(res) {
-                       $('#otpMessage').html("The contact you entered is invalid.");
+                       $('#otpMessage').html(res.responseJSON.message);
                    });
 
                });

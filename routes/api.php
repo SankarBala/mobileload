@@ -19,4 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('/otp', OTPController::class)->names('otp');
+Route::post('/otp', [OTPController::class,  'generator'])->name('otp.generator');
+Route::post('/otp-verify', [OTPController::class,  'verify'])->name('otp.verifier');
+Route::post('/change-password', [OTPController::class,  'changePassword'])->name('changePassword');

@@ -18,8 +18,8 @@ class CreateOtpsTable extends Migration
             $table->bigInteger('user_id');
             $table->integer('otp');
             $table->ipAddress('ip_address');
-            $table->softDeletes('deleted_at', 0);
-            $table->timestamps();
+            $table->string('otpToken');
+            $table->dateTime('valid_till');
         });
     }
 

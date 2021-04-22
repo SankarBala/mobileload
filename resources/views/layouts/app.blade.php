@@ -60,6 +60,7 @@
     <x-modal.login />
     <x-modal.register />
     <x-modal.forgot-password />
+    <x-modal.new-password />
     <x-modal.otp />
     <x-modal.view-plan />
     <!-- Modals end -->

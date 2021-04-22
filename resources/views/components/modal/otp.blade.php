@@ -19,26 +19,32 @@
                             </a>
                         </p>
                         <form id="otp-screen" class="form-border" method="post">
+                            <input id="otpToken" type="hidden" name="otpToken" value="" />
                             <div class="form-row">
                                 <div class="col form-group">
-                                    <input type="text" class="form-control border-2 text-center text-6 px-0 py-2"
-                                        maxlength="1" required autocomplete="off">
+                                    <input id="otpDigit1" type="text"
+                                        class="form-control border-2 text-center text-6 px-0 py-2" maxlength="1"
+                                        required autocomplete="off">
                                 </div>
                                 <div class="col form-group">
-                                    <input type="text" class="form-control border-2 text-center text-6 px-0 py-2"
-                                        maxlength="1" required autocomplete="off">
+                                    <input id="otpDigit2" type="text"
+                                        class="form-control border-2 text-center text-6 px-0 py-2" maxlength="1"
+                                        required autocomplete="off">
                                 </div>
                                 <div class="col form-group">
-                                    <input type="text" class="form-control border-2 text-center text-6 px-0 py-2"
-                                        maxlength="1" required autocomplete="off">
+                                    <input id="otpDigit3" type="text"
+                                        class="form-control border-2 text-center text-6 px-0 py-2" maxlength="1"
+                                        required autocomplete="off">
                                 </div>
                                 <div class="col form-group">
-                                    <input type="text" class="form-control border-2 text-center text-6 px-0 py-2"
-                                        maxlength="1" required autocomplete="off">
+                                    <input id="otpDigit4" type="text"
+                                        class="form-control border-2 text-center text-6 px-0 py-2" maxlength="1"
+                                        required autocomplete="off">
+                                    </div>
                                 </div>
-                            </div>
+                                <p id="otpWarning" class="text-warning"></p>
                             <button id="otpVarify" class="btn btn-primary btn-block shadow-none my-4"
-                                type="submit">Verify</button>
+                                type="button">Verify</button>
                         </form>
                         <p class="text-2 text-center">Not received your code? <a class="btn-link" href="#"
                                 data-toggle="modal" data-target="#forgot-password-modal" data-dismiss="modal">Resend
@@ -54,9 +60,38 @@
 @push('script')
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#otpVarify').click(function() {
-                alert('ok');
+            $('#otpVarify').click(function(e) {
+                e.preventDefault();
+
+                // Don't change the otp var pattern;
+                otp = `${$('#otpDigit1')
+                    .val()}${$('#otpDigit2')
+                    .val()}${$('#otpDigit3')
+                    .val()}${$('#otpDigit4').val()}`;
+
+                otpToken = $('#otpToken').val();
+
+                $.ajax({
+                    url: "{{ route('otp.verifier') }}",
+                    type: "POST",
+                    data: JSON.stringify({
+                        otp: otp,
+                        otpToken: otpToken
+                    }),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function(data, status) {
+                        $('#newPasswordOtp').val(otp);
+                        $('#otpTokenFinal').val(data.otpToken);
+                        $('#otp-modal').modal('hide');
+                        $('#new-password-modal').modal();
+                    }
+                }).fail(function(res) {
+                    $('#otpWarning').text(res.responseJSON.message);
+                });
+
             });
+
         });
 
     </script>

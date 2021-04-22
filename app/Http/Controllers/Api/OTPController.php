@@ -4,42 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\SMS\OTP as SMSOTP;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\SMS\SMS;
+use App\Mail\OTP as OTPMail;
 use App\Models\Otp;
 use App\Models\User;
+use App\Models\Profile;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\support\Facades\Auth;
 
 class OTPController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
 
-        $result = SMSOTP::to("sankar bala")->from("me")->send("Welcome");
-
-        return $result;
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return "api create";
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function generator(Request $request)
     {
 
         if (filter_var($request['contact'], FILTER_VALIDATE_EMAIL)) {
@@ -55,71 +34,122 @@ class OTPController extends Controller
 
             ]);
             $user_id = User::where('email', $request['contact'])->first()->id;
+            $connection = "email";
         } else {
+
+
             $request->validate([
                 'contact' => [
                     'required',
-                    'string',
                     'numeric',
                     'regex: /(^(\+8801|8801|01|008801))[1|3-9]{1}(\d){8}$/',
+
                 ]
             ]);
-            // $user_id = User::where('phone', $request['contact'])->first()->id;
+
+            return response()->json(['message' => 'Mobile no is not acceptable yet'], 501);
+
+            $phone = $request['contact'];
+            if (strlen($phone) == 11) {
+                $phone = '88' . $phone;
+            }
+            $phone = substr($phone, -13);
+
+            $user_id = Profile::where('phone', $phone)->first();
+
+            if ($user_id) {
+                $user_id = Profile::where('phone', $phone)->first()->user_id;
+                // $connection = "phone";
+            } else {
+                return response()->json(['message' => 'Phone number not found.'], 404);
+            }
         }
 
-
-        $otp = new OTP;
-        $otp->user_id = $user_id ?? 0;
+        $otp = OTP::where('user_id', $user_id)->first() ?? new OTP;
+        $otp->user_id = $user_id;
         $otp->otp = rand(1000, 9999);
         $otp->ip_address = $request->ip();
+        $otp->otpToken = Str::random(40);
+        $otp->valid_till = Carbon::now()->addMinutes(5);
         $otp->save();
 
+        if ($connection == 'email') {
+            Mail::to("sankarbala@gmail.com")->send(new OTPMail($otp));
+        } else {
+            SMS::to($request['contact'])->from(env('APP_NAME'))->send("$otp->otp");
+        }
 
-        return response()->json(['message' => 'OTP successfully sent to your contact']);
+        return response()->json(['message' => 'OTP successfully sent to your contact', 'otpToken' => $otp->otpToken]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+
+
+
+
+
+
+    public function verify(Request $request)
     {
-        //
+
+        $request->validate([
+            'otp' => [
+                'required',
+                'regex: /^(\d){4}$/',
+
+            ]
+        ]);
+
+        $otp = OTP::where('otpToken', $request->otpToken)->where('otp', $request->otp)->where('ip_address', $request->ip())->first();
+
+        if ($otp) {
+            return response()->json(['user_id' => $otp->user_id, 'otpToken' => $otp->otpToken]);
+        } else {
+            return response()->json(['message' => 'The otp you entered is invalid.'], 403);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+
+
+
+    public function changePassword(Request $request)
     {
-        //
+
+        $request->validate([
+            'password' => [
+                'required',
+                'string',
+                'confirmed'
+
+            ],
+            'otp' => [
+                'required',
+                'numeric',
+                'exists:otps,otp'
+            ],
+            'otpToken' => [
+                'required',
+                'string',
+                'exists:otps,otpToken'
+            ],
+
+        ]);
+
+
+        $otp = OTP::where('otpToken', $request->otpToken)->where('otp', $request->otp)->where('ip_address', $request->ip())->first();
+
+
+        if ($otp) {
+            $user_id = $otp->user_id;
+
+            $user = User::find($user_id);
+            $user->password = Hash::make($request->password);
+            $user->save();
+
+            return response()->json(['message' => $user->email]);
+        } else {
+            return response()->json(['message' => 'Something wrong in server'], 500);
+        }
     }
 }

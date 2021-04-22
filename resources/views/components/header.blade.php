@@ -49,20 +49,34 @@
 
                    <!-- Login Signup -->
 
-                   <nav class="login-signup navbar navbar-expand ml-sm-2 pl-sm-2">
-                       <ul class="navbar-nav">
-                           <li class="profile"><a class="text-white pr-0" href="{{ route('login') }}"
-                                   title="Login"><span class="d-sm-inline-block">Login</span></a></li>
-                       </ul>
-                   </nav>
+                   @auth
+                       <nav class="login-signup navbar navbar-expand ml-sm-2 pl-sm-2">
+                           <ul class="navbar-nav">
+                               <form id="logoutForm" class="d-none" method="post" action="{{ route('logout') }}">
+                                   @csrf
+                               </form>
+                               <li class="profile"><a class="text-white pr-0" href="#" id="logout" title="Login"><span
+                                           class="d-sm-inline-block">Logout</span></a></li>
+                           </ul>
+                       </nav>
+                   @endauth
 
-                   <nav class="login-signup navbar navbar-expand ml-sm-2 pl-sm-2">
-                       <ul class="navbar-nav">
-                           <li class="profile"><a class="text-white pr-2" href="{{ route('register') }}"
-                                   title="Register"><span class="d-sm-inline-block">Register</span></a>
-                           </li>
-                       </ul>
-                   </nav>
+                   @guest
+                       <nav class="login-signup navbar navbar-expand ml-sm-2 pl-sm-2">
+                           <ul class="navbar-nav">
+                               <li class="profile"><a class="text-white pr-0" href="{{ route('login') }}"
+                                       title="Login"><span class="d-sm-inline-block">Login</span></a></li>
+                           </ul>
+                       </nav>
+
+                       <nav class="login-signup navbar navbar-expand ml-sm-2 pl-sm-2">
+                           <ul class="navbar-nav">
+                               <li class="profile"><a class="text-white pr-2" href="{{ route('register') }}"
+                                       title="Register"><span class="d-sm-inline-block">Register</span></a>
+                               </li>
+                           </ul>
+                       </nav>
+                   @endguest
 
                    <!-- Collapse Button -->
                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-nav">
@@ -75,3 +89,14 @@
        </div>
    </header>
    <!-- Header end -->
+
+   @push('script')
+       <script type="text/javascript">
+           $(document).ready(function(e) {
+               $('#logout').click(function() {
+                   $('#logoutForm').submit();
+               });
+           });
+
+       </script>
+   @endpush
