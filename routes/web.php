@@ -5,6 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BasicPageController;
 use App\Http\Controllers\Admin\AdminPageController;
 use App\Http\Controllers\Client\ClientPageController;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestMail;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Carbon;
+use App\Services\Recharge;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +21,33 @@ use App\Http\Controllers\Client\ClientPageController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/ui', function(){
+
+Route::get('/ui', function () {
     return view('home');
 })->middleware('auth');
+
+Route::get('/sendmail', function () {
+    Mail::to('sankarbala232@gmail.com')->later(now(), new TestMail());
+    return 'send';
+});
+
+Route::get('/recharge', function () {
+    // Recharge::operator('gp')
+    //     ->mobile('01742725606')
+    //     ->amount(10)
+    //     ->order_number('some')
+    //     ->account_type('prepaid')
+    //     ->recharge();
+
+    // Recharge::balanceCheck();
+
+    Recharge::checkStatus();
+});
+
+
+
+
+
 
 Route::get('/', [BasicPageController::class, 'home'])->name('home');
 Route::get('/about-us', [BasicPageController::class, 'aboutUs'])->name('aboutUs');

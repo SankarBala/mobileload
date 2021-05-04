@@ -19,6 +19,7 @@
              <!-- profile info & task notification -->
              <div class="col-md-6 col-sm-4 clearfix">
                  <ul class="notification-area pull-right">
+
                      <li class="dropdown">
                          <i class="ti-bell dropdown-toggle" data-toggle="dropdown">
                              <span>2</span>
@@ -37,6 +38,7 @@
                              </div>
                          </div>
                      </li>
+
                      <li class="dropdown">
                          <i class="fa fa-envelope-o dropdown-toggle" data-toggle="dropdown"><span>1</span></i>
                          <div class="dropdown-menu notify-box nt-enveloper-box">
