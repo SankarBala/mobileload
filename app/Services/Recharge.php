@@ -77,18 +77,8 @@ class Recharge
         $response = file_get_contents($url, false, $context);
         $result = (array)json_decode(base64_decode($response));
 
-
-
-
-        // $result = array(
-        //     "status" => "true",
-        //     "error_code" => 109,
-        //     "description" => " Topup Successful",
-        //     "order_number" => "$order_number",
-        //     "order_id" => "$order_id"
-        // );
-
-        print_r($result);
+        return $result;
+        
     }
 
 

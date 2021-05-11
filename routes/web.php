@@ -7,9 +7,16 @@ use App\Http\Controllers\Admin\AdminPageController;
 use App\Http\Controllers\Client\ClientPageController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TestMail;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Services\Recharge;
+use smasif\ShurjopayLaravelPackage\ShurjopayService;
+use App\Http\Controllers\RechargeController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProfileController;
+use App\Models\User;
+use App\Notifications\TestNotification;
+use Illuminate\Support\Facades\Notification;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,30 +29,50 @@ use App\Services\Recharge;
 |
 */
 
-Route::get('/ui', function () {
-    return view('home');
-})->middleware('auth');
-
-Route::get('/sendmail', function () {
-    Mail::to('sankarbala232@gmail.com')->later(now(), new TestMail());
-    return 'send';
+Route::get('mail', function () {
+    Mail::to('sankarbala232@gmail.com')->send(new App\Mail\TestMail());
 });
 
-Route::get('/recharge', function () {
-    // Recharge::operator('gp')
-    //     ->mobile('01742725606')
-    //     ->amount(10)
-    //     ->order_number('some')
-    //     ->account_type('prepaid')
-    //     ->recharge();
+Route::get('notify', function () {
+    $user = User::find(1);
+    // $user->notify((new TestNotification())->delay(now()->addSeconds(10)));
 
-    // Recharge::balanceCheck();
+    // dd($user->notifications->count());
+    // dd($user->readNotifications->count());
+    dd($user->unReadNotifications);
 
-    Recharge::checkStatus();
+    // Notification::send($user, new TestNotification());
+
 });
 
 
 
+Route::get('/packages', function () {
+
+    $response = file_get_contents(
+        'http://bdsmartpay.com/sms/operatorplans.php',
+        false,
+        stream_context_create(
+            [
+                'http' => [
+                    'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                    'method' => 'GET'
+                ]
+            ]
+        )
+    );
+
+    return json_decode($response);
+
+})->name('packages');
+
+
+Route::post('/recharge', [RechargeController::class, 'topUp'])->name('recharge');
+Route::get('/payment',  [PaymentController::class, 'spresponse'])->name('payment');
+
+Route::post('/change-photo',  [ProfileController::class, 'changePhoto'])->name('changePhoto');
+Route::post('/client-recharge',  [ProfileController::class, 'recharge'])->name('clientRecharge');
+Route::get('/client-recharge-response',  [ProfileController::class, 'rechargeResponse'])->name('clientRechargeResponse');
 
 
 
@@ -73,13 +100,14 @@ Route::group(
 
 Route::group(
     [
-        // 'prefix' => 'client',
+        'prefix' => 'client',
         'middleware' => ['auth', 'client'],
         'as' => 'client.'
     ],
     function () {
-        Route::get('/dashboard', [ClientPageController::class, 'home'])->name('home');
+        Route::get('/', [ClientPageController::class, 'home'])->name('home');
         Route::get('/mobile-recharge', [ClientPageController::class, 'mobile_recharge'])->name('mobile_recharge');
+        Route::post('/recharge', [ClientPageController::class, 'recharge'])->name('recharge');
         Route::get('/bulk-sms', [ClientPageController::class, 'sms'])->name('sms');
         Route::get('/profile', [ClientPageController::class, 'profile'])->name('profile');
         Route::get('/setting', [ClientPageController::class, 'setting'])->name('setting');

@@ -165,7 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+        smasif\ShurjopayLaravelPackage\ShurjopayServiceProvider::class,
         /*
          * Application Service Providers...
          */

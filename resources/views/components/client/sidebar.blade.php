@@ -8,7 +8,7 @@
                     {{-- <a href=""><img src="{{ asset('backend/images/icon/logo.png') }}" class="img-logo" alt="logo"></a> --}}
                 </div>
                 <div class="logo">
-                    <img src="{{ asset('backend/images/profile/john_doe.jpg') }}" class="img-profile img-rounded"
+                    <img src="{{ Storage::url($user->profile->photo) }}" class="img-profile img-rounded"
                         alt="logo">
                 </div>
                 <div class="profile">
